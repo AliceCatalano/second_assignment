@@ -5,18 +5,13 @@ Second assignment of the Research Track 1 course. It's a C++ code to controll th
 Installing and running
 ----------------------
 
-Download (or even better, fork) the repository from: [CarmineD8/second_assignment] (https://github.com/CarmineD8/second_assignment) (github.com). After you download and build the workspace, you can run the simulation environment with:
+Download (or even better, fork) the repository from: [CarmineD8/second_assignment](https://github.com/CarmineD8/second_assignment) (github.com). After you download and build the workspace, you can run the simulation environment with:
 rosrun stage_ros stageros $(rospack find second_assignment)/world/my_world.world
 
-## Exercise
+## Structure
 -----------------------------
-
-To run one or more scripts in the simulator, use `run.py`, passing it the file names. 
-
-I am proposing you three exercises, with an increasing level of difficulty.
-The instruction for the three exercises can be found inside the .py files (exercise1.py, exercise2.py, exercise3.py).
-
-When done, you can run the program with:
+There are 3 nodes communicating: the controller_node contained in `mycontroller.cpp`, the stage_ros node contained in `my_world.world` and the client node contained in the `client.cpp`.
+The user should run them in this order or run the bash file
 
 ```bash
 $ python run.py exercise1.py
