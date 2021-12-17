@@ -22,12 +22,15 @@ bool move(my_srv::Userint::Request &req, my_srv::Userint::Response &res){
 	
 	printf("increase (a) or decrease (d) the velocity as you like! Be careful when near to the turn.\n the (r) button will bring the robot to initial position.\n");
 	if(req.drive=="a"){
+		//increasing the speed
 		res.speed= vel+0.1*vel;
 	}
 	else if(req.drive=="d"){
+		//decreasing the speed
 		res.speed= vel-0.1*vel;
 	}
 	if(req.drive=="r"){
+		//resetting the position
 		vel=res.speed;
 		ros::NodeHandle nh;
 		ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("/reset_positions");
