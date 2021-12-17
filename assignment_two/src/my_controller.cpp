@@ -74,8 +74,8 @@ void motoCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
 	}
 
 	else if ((left>1 && center<1 && right>1)||(left<1 && center<1 && right>1)){
-		//should go right
-		printf("i should go right\n");
+		//obstacle on the left
+		printf("there's a right turn \n");
 		my_vel.linear.x = vel;
 		my_vel.angular.z = -ang_vel;
 	}
