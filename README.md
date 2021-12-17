@@ -30,52 +30,39 @@ The logic of the code and how those three nodes communicate is written in the [f
 
 ### Controller ###
 
-The controller node contains the main function of the code. It implements the functionality of increasing and decreasing the speed of the robot with the function `bool move(my_srv::Userint::Request &req, my_srv::Userint::Response &res)` . The function takes as parameters the two messages of the service created `Userint.srv`
+The controller node contains the main function of the code. It implements the functionality of increasing and decreasing the speed of the robot with the function `bool move(my_srv::Userint::Request &req, my_srv::Userint::Response &res)` . The function takes as parameters the two messages (Request and Response) of the service `Userint.srv`, which structure is:
 
-### The Grabber ###
-
-The robot is equipped with a grabber, capable of picking up a token which is in front of the robot and within 0.4 metres of the robot's centre. To pick up a token, call the `R.grab` method:
-
-```python
-success = R.grab()
+```cpp
+string drive
+---
+float32 speed
 ```
+The `string drive` contains the input form the user given by the client, and depending form the input given there are different actions:
 
-The `R.grab` function returns `True` if a token was successfully picked up, or `False` otherwise. If the robot is already holding a token, it will throw an `AlreadyHoldingSomethingException`.
-
-To drop the token, call the `R.release` method.
-
-Cable-tie flails are not implemented.
-
-### Vision ###
-
-To help the robot find tokens and navigate, each token has markers stuck to it, as does each wall. The `R.see` method returns a list of all the markers the robot can see, as `Marker` objects. The robot can only see markers which it is facing towards.
-
-Each `Marker` object has the following attributes:
-
-* `info`: a `MarkerInfo` object describing the marker itself. Has the following attributes:
-  * `code`: the numeric code of the marker.
-  * `marker_type`: the type of object the marker is attached to (either `MARKER_TOKEN_GOLD`, `MARKER_TOKEN_SILVER` or `MARKER_ARENA`).
-  * `offset`: offset of the numeric code of the marker from the lowest numbered marker of its type. For example, token number 3 has the code 43, but offset 3.
-  * `size`: the size that the marker would be in the real game, for compatibility with the SR API.
-* `centre`: the location of the marker in polar coordinates, as a `PolarCoord` object. Has the following attributes:
-  * `length`: the distance from the centre of the robot to the object (in metres).
-  * `rot_y`: rotation about the Y axis in degrees.
-* `dist`: an alias for `centre.length`
-* `res`: the value of the `res` parameter of `R.see`, for compatibility with the SR API.
-* `rot_y`: an alias for `centre.rot_y`
-* `timestamp`: the time at which the marker was seen (when `R.see` was called).
-
-For example, the following code lists all of the markers the robot can see:
-
-```python
-markers = R.see()
-print "I can see", len(markers), "markers:"
-
-for m in markers:
-    if m.info.marker_type in (MARKER_TOKEN_GOLD, MARKER_TOKEN_SILVER):
-        print " - Token {0} is {1} metres away".format( m.info.offset, m.dist )
-    elif m.info.marker_type == MARKER_ARENA:
-        print " - Arena marker {0} is {1} metres away".format( m.info.offset, m.dist )
+```cpp
+if(req.drive=="a"){
+		//increasing the speed
+		res.speed= vel+0.1*vel;
+	}
+	else if(req.drive=="d"){
+		//decreasing the speed
+		res.speed= vel-0.1*vel;
+	}
+	if(req.drive=="r"){
+		//resetting the position
+		vel=res.speed;
+		ros::NodeHandle nh;
+		ros::ServiceClient client = nh.serviceClient<std_srvs::Empty>("/reset_positions");
+		std_srvs::Empty srv;
+		client.waitForExistence();
+		client.call(srv);
 ```
+In the last condition there's the call for the already given service `/reset_positions` that will stop the code and bring the robot in the initial position.
 
-[sr-api]: https://studentrobotics.org/docs/programming/sr/
+The function to check on the obstacles and let the robot move in the eviroment is `void motoCallback(const sensor_msgs::LaserScan::ConstPtr& msg)`, which takes as parameter the LaserScan message. The useful element of this message is the `ranges[]` array: it contains 720 elements which are the laser detections in a 180° view.
+Of those element 3 strategical positions, one for each side, are taken and the conditions to check for obstacles and taking the turn are applied to them. 
+The message `geometry_msgs/Twist.h` is used to pubblish the velocity of the robot to the controller, which is the subscriber.
+
+Then there's the main function which initialize all the client and the services.
+
+
