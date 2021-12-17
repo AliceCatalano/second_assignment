@@ -5,13 +5,22 @@ Second assignment of the Research Track 1 course. It's a C++ code to controll th
 Installing and running
 ----------------------
 First of all the `roscore` command must be executed in one shell.
-Download (or even better, fork) the repository from: [CarmineD8/second_assignment](https://github.com/CarmineD8/second_assignment) (github.com). After you download and build the workspace, you can run the simulation environment with:
+Each of these command should be run in the workspace repository, and defferent shell can be used
+Download (or even better, fork) the repository from: [CarmineD8/second_assignment](https://github.com/CarmineD8/second_assignment) (github.com). 
+
+After you download and build the workspace, you can run the simulation environment with:
 ```cpp
 rosrun stage_ros stageros $(rospack find second_assignment)/world/my_world.world
 ```
 
-
-
+Run the controller node, checking the path for your own repository.
+```cpp
+rosrun assignment_two mycontroller_node
+```
+Run the client node, giving the possibility to the user to control the speed
+```cpp
+rosrun my_srv client
+```
 
 ## Structure
 -----------------------------
@@ -21,7 +30,7 @@ The logic of the code and how those three nodes communicate is written in the [f
 
 ### Controller ###
 
-The controller node contains the main function of the code. It implements the functionality of increasing and decreasing 
+The controller node contains the main function of the code. It implements the functionality of increasing and decreasing the speed of the robot with the function `bool move(my_srv::Userint::Request &req, my_srv::Userint::Response &res)` . The function takes as parameters the two messages of the service created `Userint.srv`
 
 ### The Grabber ###
 
