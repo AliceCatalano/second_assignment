@@ -4,40 +4,24 @@ Second assignment of the Research Track 1 course. It's a C++ code to controll th
 
 Installing and running
 ----------------------
-
+First of all the `roscore` command must be executed in one shell.
 Download (or even better, fork) the repository from: [CarmineD8/second_assignment](https://github.com/CarmineD8/second_assignment) (github.com). After you download and build the workspace, you can run the simulation environment with:
+```cpp
 rosrun stage_ros stageros $(rospack find second_assignment)/world/my_world.world
+```
+
+
+
 
 ## Structure
 -----------------------------
 There are 3 nodes communicating: the controller_node contained in `mycontroller.cpp`, the stage_ros node contained in `my_world.world` and the client node contained in the `client.cpp`.
-The user should run them in this order or run the bash file
+The user should run them in this order or running the bash file present in this directory.
+The logic of the code and how those three nodes communicate is written in the [flowchart](Flowchart.jpg)
 
-```bash
-$ python run.py exercise1.py
-```
+### Controller ###
 
-You have also the solutions of the exercises (folder solutions)
-
-```bash
-$ python run.py solutions/exercise1_solution.py
-```
-
-Robot API
----------
-
-The API for controlling a simulated robot is designed to be as similar as possible to the [SR API][sr-api].
-
-### Motors ###
-
-The simulated robot has two motors configured for skid steering, connected to a two-output [Motor Board](https://studentrobotics.org/docs/kit/motor_board). The left motor is connected to output `0` and the right motor to output `1`.
-
-The Motor Board API is identical to [that of the SR API](https://studentrobotics.org/docs/programming/sr/motors/), except that motor boards cannot be addressed by serial number. So, to turn on the spot at one quarter of full power, one might write the following:
-
-```python
-R.motors[0].m0.power = 25
-R.motors[0].m1.power = -25
-```
+The controller node contains the main function of the code. It implements the functionality of increasing and decreasing 
 
 ### The Grabber ###
 
