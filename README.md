@@ -1,15 +1,12 @@
-Python Robotics Simulator
+ROS assignment
 ================================
-
-This is a simple, portable robot simulator developed by [Student Robotics](https://studentrobotics.org).
-Some of the arenas and the exercises have been modified for the Research Track I course
+Second assignment of the Research Track 1 course. It's a C++ code to controll the movement of a robot inside a the given path and is given the possibility to the user to increase, decrease the velocity of the robot or reset its position to the starting point.
 
 Installing and running
 ----------------------
 
-The simulator requires a Python 2.7 installation, the [pygame](http://pygame.org/) library, [PyPyBox2D](https://pypi.python.org/pypi/pypybox2d/2.1-r331), and [PyYAML](https://pypi.python.org/pypi/PyYAML/).
-
-Once the dependencies are installed, simply run the `test.py` script to test out the simulator.
+Download (or even better, fork) the repository from: [CarmineD8/second_assignment] (https://github.com/CarmineD8/second_assignment) (github.com). After you download and build the workspace, you can run the simulation environment with:
+rosrun stage_ros stageros $(rospack find second_assignment)/world/my_world.world
 
 ## Exercise
 -----------------------------
